@@ -10,7 +10,8 @@ const elements = {
     weatherBackground: document.querySelector('.weather-background'),
     autocompleteList: document.getElementById('autocomplete-list'),
     cityInput: document.getElementById('city'),
-    result: document.getElementById("result")
+    result: document.getElementById("result"),
+    forecast: document.getElementById("forecast")
 };
 
 // Estado do app
@@ -21,7 +22,28 @@ let cloudIntervals = [];
 // ===== INICIALIZAÇÃO =====
 function init() {
     setupEventListeners();
-    console.log("🚀 App de Clima com Nuvens Corrigidas inicializado!");
+    updateForecastDates(); // Atualiza as datas automaticamente
+    console.log("🚀 App de Clima com Efeitos Visuais inicializado!");
+}
+
+// ===== ATUALIZAR DATAS DA PREVISÃO =====
+function updateForecastDates() {
+    const today = new Date();
+    const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+    const forecastDays = document.querySelectorAll('.forecast-day');
+
+    forecastDays.forEach((day, index) => {
+        const nextDay = new Date(today);
+        nextDay.setDate(today.getDate() + index + 1); // +1 porque começa de amanhã
+
+        const dayName = daysOfWeek[nextDay.getDay()];
+        const dayDate = nextDay.getDate().toString().padStart(2, '0');
+        const month = (nextDay.getMonth() + 1).toString().padStart(2, '0');
+
+        day.querySelector('.day-name').textContent = dayName;
+        day.querySelector('.day-date').textContent = `${dayDate}/${month}`;
+    });
 }
 
 // ===== CONFIGURAÇÃO DE EVENTOS =====
